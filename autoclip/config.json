@@ -1,0 +1,14 @@
+{
+  "channel_url": "https://www.youtube.com/@ftrue",
+  "output_dir": "output",
+  "clips_per_video": 5,
+  "clip_min_seconds": 20,
+  "clip_max_seconds": 55,
+  "poll_hours": 1,
+  "privacy_status": "public",
+  "category_id": "20",
+  "language": "en",
+  "processed_file": "data/processed.json",
+  "max_source_hours": 4,
+  "note": "Tune channel_url to the exact Vexa / ftrue channel URL if the handle differs."
+}
