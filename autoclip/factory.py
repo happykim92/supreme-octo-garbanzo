@@ -46,7 +46,6 @@ def latest_finished_video() -> dict | None:
     opts = {
         "quiet": True, "no_warnings": True, "extract_flat": False,
         "playlistend": 8, "skip_download": True,
-        "match_filter": "is_live",
     }
     # First try channel uploads. YouTube may expose the newest finished VOD here.
     with YoutubeDL(opts) as ydl:
