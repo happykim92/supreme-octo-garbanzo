@@ -30,6 +30,14 @@ jobs:
         env:
           YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
         run: python autoclip/factory.py
+      - name: Save rendered clips as a downloadable artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: autoclipfactory-output
+          path: output/
+          if-no-files-found: ignore
+          retention-days: 3
       - name: Commit processed-video ledger
         if: always()
         run: |
