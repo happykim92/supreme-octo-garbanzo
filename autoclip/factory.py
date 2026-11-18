@@ -51,19 +51,21 @@ def latest_finished_video() -> dict | None:
     with YoutubeDL(opts) as ydl:
         info = ydl.extract_info(CFG["channel_url"], download=False)
     entries = info.get("entries") or [info]
-    for entry in entries:
-        if not entry:
-            continue
-        if entry.get("live_status") in ("is_live", "is_upcoming"):
-            continue
-        if entry.get("duration") and entry.get("webpage_url"):
-            return {
-                "id": entry.get("id"),
-                "url": entry.get("webpage_url"),
-                "title": entry.get("title", "Stream highlights"),
-                "duration": entry.get("duration", 0),
-            }
-    return None
+    # Only consider the newest upload. If it is live/upcoming or lacks a
+    # completed duration, wait rather than accidentally clipping an older VOD.
+    entry = next((item for item in entries if item), None)
+    if not entry:
+        return None
+    if entry.get("live_status") in ("is_live", "is_upcoming", "was_live") and not entry.get("duration"):
+        return None
+    if entry.get("is_live") or not entry.get("duration") or not entry.get("webpage_url"):
+        return None
+    return {
+        "id": entry.get("id"),
+        "url": entry.get("webpage_url"),
+        "title": entry.get("title", "Stream highlights"),
+        "duration": entry.get("duration", 0),
+    }
 
 
 def download_video(url: str, video_id: str) -> Path:
